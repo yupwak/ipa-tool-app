@@ -30,7 +30,8 @@ struct WebContainer: UIViewRepresentable {
         web.isOpaque = false
         web.backgroundColor = .clear
         web.scrollView.contentInsetAdjustmentBehavior = .always
-        web.load(payload.data, mimeType: "text/html", characterEncodingName: "utf-8", baseURL: payload.base)
+        let base = payload.base ?? URL(fileURLWithPath: NSTemporaryDirectory())
+        web.load(payload.data, mimeType: "text/html", characterEncodingName: "utf-8", baseURL: base)
         return web
     }
 
@@ -42,7 +43,7 @@ struct HtmlDataContainer: UIViewRepresentable {
     let data: Data
     func makeUIView(context: Context) -> WKWebView {
         let web = WKWebView()
-        web.load(data, mimeType: "text/html", characterEncodingName: "utf-8", baseURL: nil)
+        web.load(data, mimeType: "text/html", characterEncodingName: "utf-8", baseURL: URL(fileURLWithPath: NSTemporaryDirectory()))
         return web
     }
     func updateUIView(_ uiView: WKWebView, context: Context) {}
